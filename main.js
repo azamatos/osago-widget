@@ -108,12 +108,12 @@ $(function () {
         carData.policyDate = $('#policy_date').val();
         carData.usePurpose = $('#use_purpose').val();
         carData.carCode = $('#car_code_second').val();
-        carData.engineType = $('#engine_type').val();
-        carData.vehicleType = $('#vehicle_type').val();
-        carData.documentType = $('#document_type').val();
+        carData.engineType = { value: $('#engine_type').val(), name: $('#engine_type option:selected').text() };
+        carData.vehicleType = { value: $('#vehicle_type').val(), name: $('#vehicle_type option:selected').text() };
+        carData.documentType = { value: $('#document_type').val(), name: $('#document_type option:selected').text() };
         carData.documentSeriesNumber = $('.doc_series_number').val();
         carData.documentIssueDate = $('#doc_date_issue').val();
-        carData.idType = $('#id_type').val();
+        carData.idType = { value: $('#id_type').val(), name: $('#id_type option:selected').text() };
         carData.idNumber = $('.id_number').val();
         console.log(carData);
         $(`#list_${2}`).fadeOut(300);
@@ -132,6 +132,25 @@ $(function () {
         } else ownerBlock.fadeIn(300);
     })
 
+    //show org_issue by checkbox
+
+    const ownerCitizen = $('#owner_is_citizen');
+    const ownerOrgIssue = $('#owner_org_issue');
+    const holderCitizen = $('#holder_is_citizen');
+    const holderOrgIssue = $('#holder_org_issue');
+
+    ownerCitizen.on('change', function () {
+        if (ownerCitizen.is(':checked')) {
+            ownerOrgIssue.fadeIn(300);
+        } else ownerOrgIssue.fadeOut(300);
+    })
+
+    holderCitizen.on('change', function () {
+        if (holderCitizen.is(':checked')) {
+            holderOrgIssue.fadeIn(300);
+        } else holderOrgIssue.fadeOut(300);
+    })
+
     // list 3 data save
 
     $('#next_3').on('click', function (event) {
@@ -141,6 +160,8 @@ $(function () {
             const value = $(this).val();
             if (type == 'checkbox') {
                 policyHolder[name] = $(this).is(':checked');
+            } else if (name == "gender") {
+                policyHolder[name] = { value, name: $("option:selected", this).text() }
             } else {
                 policyHolder[name] = value;
             }
@@ -151,10 +172,12 @@ $(function () {
         } else {
             $('#policy_owner').find('input,select').each(function () {
                 const name = $(this).attr('name');
-                const type = $(this).attr('checkbox');
+                const type = $(this).attr('type');
                 const value = $(this).val();
                 if (type == 'checkbox') {
                     policyOwner[name] = $(this).is(':checked');
+                } else if (name == "gender") {
+                    policyOwner[name] = { value, name: $("option:selected", this).text() }
                 } else {
                     policyOwner[name] = value;
                 }
@@ -184,12 +207,18 @@ $(function () {
                     const value = $(this).val();
                     if (type == 'checkbox') {
                         driverData[name] = $(this).is(':checked');
+                    } else if (type == 'search') {
+                        driverData[name] = { name: $("option:selected", this).text(), value }
+                    } else if (name == "gender") {
+                        driverData[name] = { value, name: $("option:selected", this).text() }
                     } else {
                         driverData[name] = value;
                     }
                 })
                 drivers.push({ ...driverData });
             }
+        } else {
+            drivers = [];
         }
 
         $('#car_brand_model').text(`${carData?.brand?.value || ''} ${carData?.model?.value || ''}`);
@@ -201,18 +230,18 @@ $(function () {
 
         $('#holder_FIO').text(`${policyHolder.last_name || ''} ${policyHolder.first_name || ''} ${policyHolder.middle_name || ''}`);
         $('#holder_birth_date_data').text(`${policyHolder.birth_date || ''}`);
-        $('#holder_gender_data').text(`${policyHolder.gender || ''}`);
+        $('#holder_gender_data').text(`${policyHolder?.gender?.name || ''}`);
         $('#holder_passport_rus_data').text(`${policyHolder.passport_data || ''}`);
-        $('#holder_registration_address').text(`${policyHolder.address || ''}`);
+        $('#holder_registration_address').text(`${policyHolder?.address.name || ''}`);
         $('#holder_owner_same').text(policyHolder.passport_data == policyOwner.passport_data ? 'Да' : 'Нет');
         $('#holder_email').text(policyHolder.email || '');
         $('#holder_phone_number').text(policyHolder.phone_number || '');
 
         $('#owner_FIO').text(`${policyOwner.last_name || ''} ${policyOwner.first_name || ''} ${policyOwner.middle_name || ''}`);
         $('#owner_birth_date_data').text(`${policyOwner.birth_date || ''}`);
-        $('#owner_gender_data').text(`${policyOwner.gender || ''}`);
+        $('#owner_gender_data').text(`${policyOwner?.gender?.name || ''}`);
         $('#owner_passport_rus_data').text(`${policyOwner.passport_data || ''}`);
-        $('#owner_registration_address').text(`${policyOwner.address || ''}`);
+        $('#owner_registration_address').text(`${policyOwner?.address?.name || ''}`);
 
         $('.driver_data_block').remove();
         for (let i = 0; i < drivers.length; i++) {
@@ -261,11 +290,7 @@ $(function () {
         toggleDriverButton(first_driver);
 
         toggleDriverBlock(firstInputBlock);
-        // $('.driver_list').children().not(first_driver).css('background-color', 'var(--secondary_background)');
-        // $(first_driver).css('background-color', 'var(--secondary-color)');
 
-        // driverInputs.children().not(firstInputBlock).css('display', 'none');
-        // $(firstInputBlock).css('display', 'block');
     });
     $(first_driver).css('background-color', 'var(--secondary-color)');
 
@@ -296,16 +321,16 @@ $(function () {
 
     // block_5 logic
     $('#next_5').on('click', function (event) {
-
+        calculateData();
         $(`#list_${5}`).fadeOut(300);
         $(`#list_${6}`).fadeIn(300);
 
         navigate_page(6);
     })
 
+
+
 });
-
-
 
 
 function toggleDriverButton(currentDriver) {
@@ -385,7 +410,8 @@ function addressChange(e, address, list) {
                 const dropdown = $(list);
                 dropdown.empty();
                 suggestions?.map((elem) => {
-                    const option = `<option value="${elem.value}">${elem.value}</option>`;
+                    const kladrCode = elem.data.kladr_id;
+                    const option = `<option value="${kladrCode}">${elem.value}</option>`;
                     dropdown.append(option);
                 });
                 dropDownList(address, list, 'address');
@@ -497,6 +523,84 @@ function engineChange(engine, list) {
             dropDownList(engine, list, 'engine');
         }
     });
+}
+
+function calculateData() {
+    const url = baseUrl + `/calculate`;
+
+    const data = {
+        osagoStartDate: cutDateText(carData.policyDate),
+        vehicleBrandName: carData?.brand?.value,
+        vehichleBrand: carData?.brand?.data,
+        vehicleModelName: carData?.model?.value,
+        vehicleModel: carData?.model?.id,
+        vehicleYear: carData.year,
+        autoDocumentType: carData?.documentType?.value,
+        autoDoucmentSerie: carData.documentSeriesNumber.substring(0, 5),
+        autoDocumentNumber: carData.documentSeriesNumber.substring(6, 12),
+        autoDocumentDate: cutDateText(carData.documentIssueDate),
+        insurerLastName: policyHolder.last_name,
+        insurerFirstName: policyHolder.first_name,
+        insurerGender: policyHolder?.gender?.value,
+        insurerPassportOrganization: policyHolder.org_issue,
+        insurerBirthDate: cutDateText(policyHolder.birth_date),
+        insurerPhoneNumber: policyHolder.phone_number,
+        insurerEmailAddress: policyHolder.email,
+        insurerPassportSerie: policyHolder.passport_data.substring(0, 5),
+        insurerPassportNumber: policyHolder.passport_data.substring(6, 12),
+        insurerPassportOrganizationCode: policyHolder.section_code,
+        insurerPassportDate: cutDateText(policyHolder.passport_date),
+        insurerRegionKladrCode: policyHolder?.address?.value,
+        identifierType: carData?.idType?.value,
+        identifierNumber: carData.idNumber,
+        vehicleType: carData?.vehicleType?.value,
+        vehicle_power: carData.engine,
+        isInsurerClient: policyHolder?.address?.value == policyOwner?.address?.value,
+        clientLastName: policyOwner.last_name,
+        clientFirstName: policyOwner.first_name,
+        clientGender: policyOwner?.gender?.value,
+        clientBirthDate: cutDateText(policyOwner.birth_date),
+        clientPassportOrganization: policyOwner.org_issue,
+        clientPassportDate: cutDateText(policyOwner.passport_date),
+        isClientForeigner: policyOwner.is_citizen,
+        clientPassportSerie: policyOwner.passport_data.substring(0, 5),
+        clientPassportNumber: policyOwner.passport_data.substring(6, 12),
+        clientPassportOrganizationCode: policyOwner.section_code,
+        clientRegionKladrCode: policyHolder?.address?.value,
+        driverCount: drivers.length,
+        isUnlimitedDrivers: drivers.length === 0,
+    }
+    for (let i = 0; i < drivers.length; i++) {
+        data[`driver${i + 1}BirthDate`] = drivers[i].birth_date;
+        data[`driver${i + 1}LastName`] = drivers[i].last_name;
+        data[`driver${i + 1}FirstName`] = drivers[i].first_name;
+        data[`driver${i + 1}ForeignDriverLicense`] = drivers[i].foreign_license;
+        data[`driver${i + 1}Serie`] = drivers[i].current_driver_license.substring(0, 5);
+        data[`driver${i + 1}Number`] = drivers[i].current_driver_license.substring(6, 12);
+        data[`driver${i + 1}LicenseIssue`] = cutDateText(drivers[i].license_date);
+        data[`driver${i + 1}FirstLicenseIssue`] = cutDateText(drivers[i].first_license_date);
+    }
+
+    console.log(data);
+    // $.ajax({
+    //     url,
+    //     method: 'post',
+    //     headers: {
+    //         "Content-Type": "text/html",
+    //         "Accept": "*/*",
+    //         "Enc": "$2y$10$ehBSUYD9.aPIY6oOGgeCpeX5q0d3yPiLpvDpcHrhlNBWDyYipu2ua"
+    //     },
+    //     dataType: 'text',
+    //     data: { model_id: carData.model.id, year: carData.year },
+    //     success: function (data) {
+    //         const result = JSON.parse(data);
+    //         console.log(result);
+    //     }
+    // });
+}
+
+function cutDateText(dateString) {
+    return dateString.substring(0, dateString.length - 3)
 }
 
 const debounceOnAddressChange = debounce(addressChange, 400);
@@ -615,7 +719,7 @@ function checkInput(option, type) {
 
 // calculate block
 
-function calculate() {
+function calculateCarCode() {
     const value = $('.car_code_input').val();
     const url = "https://polis.sale/widget/osago/auto_fill"
 
@@ -732,16 +836,16 @@ const block_2 = `
                     <div class="input__el">
                         <label for="engine_type">Тип двигателя</label>
                         <select id="engine_type" class="select_menu" name="engine_type">
-                        <option>Бензин</option>
-                        <option>Дизель</option>
-                        <option>Электро</option>
-                        <option>Гибрид</option>
+                        <option value="P">Бензин</option>
+                        <option value="D">Дизель</option>
+                        <option value="E">Электро</option>
+                        <option value="H">Гибрид</option>
                     </select>
                     </div>
                     <div class="input__el">
                         <label for="vehicle_type">Тип транспортного средства</label>
                         <select id="vehicle_type" class="select_menu" name="vehicle_type">
-                            <option>Легковые автомобили</option>
+                            <option value="640189240">Легковые автомобили</option>
                         </select>
                     </div>
                 </div>
@@ -754,9 +858,9 @@ const block_2 = `
                     <div class="input__el">
                         <label for="document">Документ</label>
                         <select id="document_type" class="select_menu" name="document">
-                            <option>ПТС</option>
-                            <option>СТС</option>
-                            <option>ЭПТС</option>
+                            <option value="pts">ПТС</option>
+                            <option value="sts">СТС</option>
+                            <option value="epts">ЭПТС</option>
                         </select>
                     </div>
                     <div class="input__el">
@@ -770,9 +874,9 @@ const block_2 = `
                     <div class="input__el">
                         <label for="identificator">Идентификатор</label>
                         <select id="id_type" class="select_menu" name="identificator">
-                            <option>ВИН</option>
-                            <option>Номер кузова</option>
-                            <option>Шасси</option>
+                            <option value="vin">ВИН</option>
+                            <option value="body">Номер кузова</option>
+                            <option value="chassis">Шасси</option>
                         </select>
                     </div>
                     <div class="input__el">
@@ -817,8 +921,8 @@ const block_3 = `
                     <div class="input__el">
                         <label for="gender">Пол</label>
                         <select class="select_menu" name="gender">
-                            <option>Мужской</option>
-                            <option>Женский</option>
+                            <option value="1">Мужской</option>
+                            <option value="2">Женский</option>
                         </select>
                     </div>
                 </div>
@@ -837,19 +941,19 @@ const block_3 = `
                     </div>
                 </div>
                 <div class="grid__inputs">
-                    <div class="checkbox">
-                        <input type="checkbox" name="is_citizen">
-                        <label for="is_citizen">Не резидент РФ</label>
-                    </div>
-                    <div class="input__el">
-                        <label for="org_issue">Кем выдан</label>
-                        <input type="text" name="org_issue" placeholder="Введите организацию">
-                    </div>
+                <div class="checkbox">
+                    <input id="holder_is_citizen" type="checkbox" name="is_citizen">
+                    <label for="is_citizen">Не резидент РФ</label>
                 </div>
+                <div id="holder_org_issue" class="input__el">
+                    <label for="org_issue">Кем выдан</label>
+                    <input  type="text" name="org_issue" placeholder="Введите организацию">
+                </div>
+            </div>
                 <div class="none_grid">
                     <div class="input__el">
                         <label for="address">Адрес</label>
-                        <input list="" id="holder_address" role="combobox" class="full_width"
+                        <input list="" type="search" id="holder_address" role="combobox" class="full_width"
                             name="address" autocomplete="off" placeholder="Введите адрес" />
                         <datalist id="holder_dropdown" class="full_width" role="listbox">
                         </datalist>
@@ -896,8 +1000,8 @@ const block_3 = `
                     <div class="input__el">
                         <label for="gender">Пол</label>
                         <select class="select_menu" name="gender">
-                            <option>Мужской</option>
-                            <option>Женский</option>
+                            <option value="1">Мужской</option>
+                            <option value="2">Женский</option>
                         </select>
                     </div>
                 </div>
@@ -917,18 +1021,18 @@ const block_3 = `
                 </div>
                 <div class="grid__inputs">
                     <div class="checkbox">
-                        <input type="checkbox" name="is_citizen">
+                        <input id="owner_is_citizen" type="checkbox" name="is_citizen">
                         <label for="is_citizen">Не резидент РФ</label>
                     </div>
-                    <div class="input__el">
+                    <div id="owner_org_issue" class="input__el">
                         <label for="org_issue">Кем выдан</label>
-                        <input type="text" name="org_issue" placeholder="Введите организацию">
+                        <input  type="text" name="org_issue" placeholder="Введите организацию">
                     </div>
                 </div>
                 <div class="none_grid">
                     <div class="input__el">
                         <label for="address">Адрес</label>
-                        <input list="" id="owner_address" role="combobox" class="full_width"
+                        <input list="" type="search" id="owner_address" role="combobox" class="full_width"
                             name="address" autocomplete="off" placeholder="Введите адрес" />
                         <datalist id="owner_dropdown" class="full_width" role="listbox">
                         </datalist>
@@ -967,8 +1071,8 @@ function createDriverBlock(count) {
                                 <div class="input__el">
                                     <label for="gender">Пол</label>
                                     <select class="select_menu" name="gender">
-                                        <option>Мужской</option>
-                                        <option>Женский</option>
+                                        <option value="1">Мужской</option>
+                                        <option value="2">Женский</option>
                                     </select>
                                 </div>
                             </div>
@@ -1072,7 +1176,7 @@ function createDriverLabelBlock(driver, step) {
             Пол
         </span>
         <span class="label_text">
-            ${driver.gender || ''}
+            ${driver?.gender?.name || ''}
         </span>
     </div>
     <div class="label_el">
@@ -1158,12 +1262,14 @@ const block_5 = `
                         <span  class="label_title">
                             ПТС
                         </span>
-                        <span id="doc_number_data" class="label_text">
-                            серия и номер 2342 2342344 <br>
-                            <span id="doc_issue_date_data">
-                                дата выдачи 02.02.2002 г.
+                        <div class="input__el">
+                            <span id="doc_number_data" class="label_text">
+                                серия и номер 2342 2342344 <br>
                             </span>
-                        </span>
+                            <span id="doc_issue_date_data" class="label_text">
+                                    дата выдачи 02.02.2002 г.
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="label_block">
