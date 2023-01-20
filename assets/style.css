@@ -73,6 +73,7 @@ select {
     font-size: 18px;
     font-weight: 500;
     padding-bottom: 5px;
+    cursor: pointer;
 }
 
 .navigation_arrow {
@@ -93,6 +94,10 @@ select {
 #list_4,
 #list_5,
 #list_6 {
+    display: none;
+}
+
+#owner_org_issue, #holder_org_issue {
     display: none;
 }
 
