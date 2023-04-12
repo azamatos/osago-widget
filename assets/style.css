@@ -19,6 +19,7 @@
 body {
     width: 100vw;
     font-family: 'Montserrat', sans-serif;
+    font-size: 1em;
 }
 
 textarea,
@@ -31,6 +32,7 @@ select {
 #osago_widget {
     position: relative;
     max-width: 900px;
+    min-width: 370px;
 }
 
 .global_container {
@@ -39,13 +41,15 @@ select {
     background-color: var(--primary-background);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
-    padding-top: 30px;
+    padding-top: 1.875em;
 }
 
 .container {
     position: relative;
     width: 100%;
-    padding: 20px;
+    display: flex;
+    justify-content: center;
+    padding: 1.25em;
 }
 
 .main__block {
@@ -57,22 +61,25 @@ select {
 }
 
 .navigation_block {
-    width: 750px;
+    width: 90%;
     background-color: var(--secondary_background);
     height: 60px;
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 10px;
+    padding: 0.625em;
     justify-content: center;
     margin: 0 auto;
 }
 
+.navigation_block_el {
+    padding-bottom: 5px;
+}
+
 .navigation_el {
     text-align: center;
-    font-size: 18px;
+    font-size: 1.125em;
     font-weight: 500;
-    padding-bottom: 5px;
     cursor: pointer;
 }
 
@@ -81,12 +88,18 @@ select {
     height: 50px;
 }
 
+.navigation_img {
+    display: none;
+    width: 40px;
+    height: 40px;
+}
+
 .navigation_selected {
     border-bottom: 2px solid var(--primar-color);
 }
 
 .fixed_padding {
-    padding: 20px;
+    padding: 1.25em;
 }
 
 #list_2,
@@ -97,7 +110,8 @@ select {
     display: none;
 }
 
-#owner_org_issue, #holder_org_issue {
+#owner_org_issue,
+#holder_org_issue {
     display: none;
 }
 
@@ -115,7 +129,7 @@ select {
 .list_1__body {
     display: flex;
     width: 100%;
-    padding: 0 50px;
+    padding: 0 3.125em;
     justify-content: space-between;
     align-items: center;
 }
@@ -125,7 +139,7 @@ select {
     width: 100%;
     flex-direction: column;
     gap: 20px;
-    padding: 20px;
+    padding: 1.25em;
 }
 
 .driver_add_block {
@@ -137,7 +151,7 @@ select {
 }
 
 .driver_title_block {
-    padding: 15px 0 15px 25px;
+    padding: 0.938em;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -150,19 +164,13 @@ select {
     gap: 20px;
 }
 
-.driver_list {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-}
-
 .driver_selector button {
     border: none;
     width: 60px;
     height: 40px;
     border-radius: 10px;
     font-family: inherit;
-    font-size: 24px;
+    font-size: 1.5em;
     font-weight: 700;
     cursor: pointer;
 }
@@ -173,7 +181,7 @@ select {
 }
 
 .single_input {
-    padding: 0 20px;
+    padding: 0 1.125em;
 }
 
 .police_block {
@@ -182,7 +190,7 @@ select {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding: 20px;
+    padding: 1.25em;
     background-color: var(--secondary_background);
     border-radius: 10px;
 }
@@ -191,22 +199,24 @@ select {
     width: 400px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 20px;
+    padding: 0.875em;
 }
 
 .police_title {
-    font-size: 20px;
+    font-size: 1.25em;
     font-weight: 600;
 }
 
 .police_price {
-    font-size: 20px;
+    font-size: 1.25em;
     font-weight: 400;
 }
 
 .suggestment_block {
     background-color: var(--primar-color);
-    width: 350px;
+    max-width: 350px;
     margin: 0 auto;
     height: 80px;
     display: flex;
@@ -219,13 +229,13 @@ select {
 .white_title {
     color: var(--secondary-color);
     font-weight: 500;
-    font-size: 16px;
+    font-size: 1em;
 }
 
 .white_desc {
     color: var(--secondary-color);
     font-weight: 200;
-    font-size: 14px;
+    font-size: 0.875em;
 }
 
 .grid__inputs {
@@ -238,10 +248,19 @@ select {
     align-items: center;
 }
 
+.grid__buttons {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 20px 10px;
+    justify-items: center;
+    align-items: center;
+}
+
 .text_block {
     display: grid;
     width: 100%;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     grid-auto-rows: minmax(80px, auto);
     gap: 20px;
     justify-items: center;
@@ -263,7 +282,7 @@ select {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
+    padding: 0.625em;
     border-bottom: 1px solid #000000;
 }
 
@@ -273,13 +292,13 @@ select {
 
 .label_title {
     font-weight: 600;
-    font-size: 14px;
+    font-size: 0.875em;
     line-height: 24px;
 }
 
 .label_text {
     font-weight: 400;
-    font-size: 14px;
+    font-size: 0.875em;
     line-height: 24px;
     text-align: right;
 }
@@ -287,7 +306,7 @@ select {
 .none_grid {
     width: 100%;
     display: grid;
-    padding: 0 5px;
+    padding: 0 0.313em;
     justify-items: center;
     align-items: center;
 }
@@ -305,7 +324,7 @@ select {
     flex-direction: row;
     align-items: center;
     gap: 20px;
-    padding: 20px 15px 0 15px;
+    padding: 1.25em 0.938em 0 0.938em;
 }
 
 .checkbox input {
@@ -318,7 +337,7 @@ select {
     width: 200px;
     font-weight: 500;
     color: #000000;
-    font-size: 18px;
+    font-size: 1.125em;
     line-height: 20px;
 }
 
@@ -336,19 +355,19 @@ select {
 .down_arrow::after {
     position: absolute;
     top: 35px;
-    right: 25px;
+    right: 20px;
     content: '';
     display: block;
-    height: 25px;
-    width: 25px;
+    height: 20px;
+    width: 20px;
     background: url(images/down_arrow.svg) no-repeat 0px 0px;
 }
 
 .input__el label {
     font-weight: 500;
     color: #000000;
-    padding: 2px 5px;
-    font-size: 14px;
+    padding: 0.125em 0.313em;
+    font-size: 0.875em;
     line-height: 20px;
 }
 
@@ -358,8 +377,8 @@ select {
     height: 40px;
     color: #000000;
     border-radius: 6px;
-    padding: 10px 15px;
-    font-size: 18px;
+    padding: 0.625em 0.938em;
+    font-size: 1.125em;
 }
 
 .input__el select {
@@ -367,8 +386,8 @@ select {
     height: 40px;
     color: #000000;
     border-radius: 6px;
-    padding: 10px 15px;
-    font-size: 18px;
+    padding: 0.625em 0.938em;
+    font-size: 1.125em;
     line-height: 1;
     background: url(images/down_arrow.svg) no-repeat right var(--secondary_background);
     -moz-appearance: none;
@@ -376,7 +395,7 @@ select {
     -webkit-appearance: none;
     /* Safari and Chrome */
     appearance: none;
-    background-position-x: 200px;
+    background-position-x: 210px;
 }
 
 .input__el datalist {
@@ -386,7 +405,7 @@ select {
     border-top: 1px solid var(--primar-color);
     width: 250px;
     top: 64px;
-    padding: 5px;
+    padding: 0.313em;
     max-height: 10rem;
     overflow-y: auto;
     z-index: 100;
@@ -394,10 +413,10 @@ select {
 
 .input__el option {
     background-color: var(--secondary_background);
-    padding: 5px 10px;
+    padding: 0.313em 0.625em;
     color: #000000;
     margin-bottom: 1px;
-    font-size: 18px;
+    font-size: 1.125em;
     font-weight: 500;
     cursor: pointer;
 }
@@ -413,26 +432,26 @@ select::-ms-expand {
 }
 
 .input__el input::placeholder {
-    color: #000000;
+    color: #00000099;
 }
 
 .list_1__body_left {
     width: 30%;
     text-align: center;
     text-transform: uppercase;
-    font-size: 24px;
+    font-size: 1.5em;
     font-weight: 600;
 }
 
 .description__text {
     font-weight: 600;
-    font-size: 28px;
+    font-size: 1.75em;
     line-height: 40px;
 }
 
 .description_block {
     font-weight: 600;
-    font-size: 20px;
+    font-size: 1.25em;
     line-height: 40px;
 }
 
@@ -443,9 +462,9 @@ select::-ms-expand {
 
 .list_1__body_right {
     display: flex;
-    width: 60%;
+    max-width: 450px;
     height: 250px;
-    padding: 10px;
+    padding: 0.625em;
     background-color: var(--secondary-color);
     border-radius: 50px;
     flex-direction: column;
@@ -461,12 +480,12 @@ select::-ms-expand {
 }
 
 #right_block_title {
-    font-size: 20px;
+    font-size: 1.25em;
     font-weight: 600;
 }
 
 #right_block_helper {
-    font-size: 16px;
+    font-size: 0.875em;
     font-weight: 400;
 }
 
@@ -475,7 +494,7 @@ select::-ms-expand {
     flex-direction: row;
     height: 50px;
     width: 70%;
-    padding: 0 10px;
+    padding: 0 0.625em;
     align-items: center;
     background-color: var(--secondary_background);
     border-radius: 10px;
@@ -487,10 +506,13 @@ select::-ms-expand {
     width: 60%;
     background-color: inherit;
     font-weight: 500;
-    font-size: 26px;
+    font-size: 1.5em;
     line-height: 30px;
     text-transform: uppercase;
+}
 
+.car_code_input {
+    text-transform: uppercase;
 }
 
 .vertical_divider {
@@ -514,25 +536,25 @@ select::-ms-expand {
 
 #white_block {
     background-color: white;
-    width: 50px;
+    width: 100%;
     height: 8px;
 }
 
 #blue_block {
     background-color: blue;
-    width: 50px;
+    width: 100%;
     height: 8px;
 }
 
 #red_block {
     background-color: red;
-    width: 50px;
+    width: 100%;
     height: 8px;
 }
 
 #flag_name {
     text-transform: uppercase;
-    font-size: 16px;
+    font-size: 0.875em;
     font-weight: 600;
 }
 
@@ -561,12 +583,12 @@ select::-ms-expand {
 }
 
 .secondary_button {
-    padding: 10px 20px;
+    padding: 0.625em 1.25em;
     background-color: var(--secondary-color);
     color: var(--primar-color);
     border-radius: 10px;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 1.25em;
     line-height: 30px;
     letter-spacing: 1px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -575,12 +597,12 @@ select::-ms-expand {
 }
 
 .primary_button {
-    padding: 10px 20px;
+    padding: 0.625em 1.25em;
     background-color: var(--primar-color);
     color: var(--secondary-color);
     border-radius: 10px;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 1.25em;
     line-height: 30px;
     letter-spacing: 1px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -593,7 +615,7 @@ select::-ms-expand {
     background-color: var(--primar-color);
     color: var(--secondary-color);
     font-weight: 600;
-    font-size: 20px;
+    font-size: 1.25em;
     border: none;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     cursor: pointer;
@@ -604,20 +626,20 @@ select::-ms-expand {
     background-color: var(--secondary-color);
     color: var(--primar-color);
     font-weight: 600;
-    font-size: 20px;
+    font-size: 1.25em;
     border: none;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     cursor: pointer;
 }
 
 .no_number {
-    font-size: 20px;
+    font-size: 1.25em;
     line-height: 32px;
     font-weight: 600;
 }
 
 .next_block {
-    font-size: 20px;
+    font-size: 1.25em;
     line-height: 32px;
     font-weight: 600;
     background-color: inherit;
@@ -628,10 +650,88 @@ select::-ms-expand {
 }
 
 .list_1__footer {
-    padding-left: 50px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 0 0.875em;
     font-style: normal;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 0.875em;
     line-height: 24px;
     text-transform: uppercase;
+}
+
+/* MEDIA */
+
+@media only screen and (max-width:849px) {
+    .list_1__body {
+        justify-content: center;
+    }
+
+    .list_1__body_left {
+        display: none;
+    }
+}
+
+@media only screen and (max-width:749px) {
+
+    .centered_button {
+        justify-content: center;
+        padding: 0;
+    }
+
+    .navigation_block {
+        width: 60%;
+        min-width: 420px;
+    }
+
+    .navigation_img {
+        display: block;
+    }
+
+    .navigation_el {
+        display: none;
+    }
+}
+
+@media only screen and (max-width:560px) {
+
+    .police_icon {
+        display: none;
+    }
+
+    .police_header {
+        flex-direction: column;
+        align-items: start;
+        gap:10px;
+    }
+
+    .primary_button {
+        line-height: 20px;
+    }
+
+    .secondary_button {
+        line-height: 20px;
+    }
+
+    body {
+        font-size: 12px;
+    }
+
+    .list_1__body {
+        padding: 0;
+        justify-content: center;
+    }
+
+    .list_1__body_right {
+        height: 200px;
+        gap: 15px;
+    }
+
+    .russian_flag {
+        width: 35px;
+    }
+
+    .list_1__body_left {
+        display: none;
+    }
 }
